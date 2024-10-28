@@ -2,7 +2,7 @@
     "name": "paula-tweaks",
     "displayName": "paula-tweaks",
     "description": "my vscode tweaks",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "engines": {
         "vscode": "^1.91.0"
     },
