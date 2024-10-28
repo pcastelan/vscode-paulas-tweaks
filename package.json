@@ -1,0 +1,49 @@
+{
+    "name": "paula-tweaks",
+    "displayName": "paula-tweaks",
+    "description": "my vscode tweaks",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.91.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "panel": [
+                {
+                    "id": "bookmarksPanelContainer",
+                    "title": "Bookmarks",
+                    "icon": "resources/breakpoints-icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "bookmarksPanelContainer": [
+                {
+                    "id": "bookmarksPanel",
+                    "name": "Paula's bookmarks"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.91.0",
+        "@types/mocha": "^10.0.7",
+        "@types/node": "20.x",
+        "eslint": "^8.57.0",
+        "typescript": "^5.4.5",
+        "@vscode/test-cli": "^0.0.9",
+        "@vscode/test-electron": "^2.4.0"
+    }
+}
