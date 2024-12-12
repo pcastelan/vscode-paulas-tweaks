@@ -15,7 +15,10 @@ class BreakpointsProvider {
         return element;
     }
 
-    async getChildren() {
+    async getChildren(element = undefined) {
+        if (element !== undefined) {
+            return element.children;
+        }
         const breakpoints = vscode.debug.breakpoints;
         const workspaceFolders = vscode.workspace.workspaceFolders || [];
 
@@ -45,10 +48,9 @@ class BreakpointsProvider {
 
             const line = bp.location.range.start.line + 1; // Adiciona 1 para alinhar com a numeração do editor
             const isLogpoint = bp.logMessage ? true : false;
-            const label = `${fileName}:${line}` + (isLogpoint ? ` - ${bp.logMessage}` : ``);
+            const label = isLogpoint ? bp.logMessage : `${fileName}:${line}`;
 
-
-            const treeItem = new vscode.TreeItem(label);
+            const treeItem = new vscode.TreeItem(label, isLogpoint ? vscode.TreeItemCollapsibleState.Collapsed: vscode.TreeItemCollapsibleState.None);
             treeItem.command = {
                 command: 'vscode.open',
                 title: "Go to breakpoint",
@@ -58,9 +60,17 @@ class BreakpointsProvider {
                 ]
             };
 
-            treeItem.description = relativePath;
+            treeItem.description = isLogpoint ? `${fileName}:${line}` : relativePath;
             treeItem.tooltip = bp.location.uri.path;
             treeItem.iconPath = new vscode.ThemeIcon((bp.enabled ? 'debug-breakpoint' : 'debug-breakpoint-unverified'));
+
+            if(isLogpoint){
+                treeItem.children = [
+                    new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None)
+                ];
+            }
+
+            // Return the tree item
             return treeItem;
         });
     }
