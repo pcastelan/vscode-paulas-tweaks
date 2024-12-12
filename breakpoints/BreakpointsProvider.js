@@ -31,7 +31,6 @@ class BreakpointsProvider {
         const workspaceFolder = workspaceFolders[0].uri.fsPath;
 
 
-
         // Ordenar breakpoints pelo caminho do arquivo
         const sortedBreakpoints = breakpoints.sort((a, b) => {
             const pathA = a.location.uri.path;
@@ -50,7 +49,10 @@ class BreakpointsProvider {
             const isLogpoint = bp.logMessage ? true : false;
             const label = isLogpoint ? bp.logMessage : `${fileName}:${line}`;
 
-            const treeItem = new vscode.TreeItem(label, isLogpoint ? vscode.TreeItemCollapsibleState.Collapsed: vscode.TreeItemCollapsibleState.None);
+            const treeItem = new vscode.TreeItem(label, vscode.TreeItemCollapsibleState.Collapsed);
+            treeItem.description = isLogpoint ? `${fileName}:${line}` : '';
+            treeItem.tooltip = bp.location.uri.path;
+
             treeItem.command = {
                 command: 'vscode.open',
                 title: "Go to breakpoint",
@@ -60,15 +62,11 @@ class BreakpointsProvider {
                 ]
             };
 
-            treeItem.description = isLogpoint ? `${fileName}:${line}` : relativePath;
-            treeItem.tooltip = bp.location.uri.path;
-            treeItem.iconPath = new vscode.ThemeIcon((bp.enabled ? 'debug-breakpoint' : 'debug-breakpoint-unverified'));
-
-            if(isLogpoint){
-                treeItem.children = [
-                    new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None)
-                ];
-            }
+            const treeChild = new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None);
+            treeChild.iconPath = new vscode.ThemeIcon('debug-breakpoint-log-unverified');
+            treeItem.children = [
+                treeChild
+            ];
 
             // Return the tree item
             return treeItem;
