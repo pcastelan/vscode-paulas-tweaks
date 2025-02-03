@@ -62,10 +62,13 @@ class BreakpointsProvider {
                 ]
             };
 
-            const treeChild = new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None);
-            treeChild.iconPath = new vscode.ThemeIcon('debug-breakpoint-log-unverified');
+            const treeChildPath = new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None);
+            const treeChildLine = new vscode.TreeItem('line: ' + line, vscode.TreeItemCollapsibleState.None);
+            treeChildPath.iconPath = new vscode.ThemeIcon('bookmark');
+            treeChildLine.iconPath = new vscode.ThemeIcon('debug-breakpoint-log-unverified');
             treeItem.children = [
-                treeChild
+                treeChildPath,
+                treeChildLine,
             ];
 
             // Return the tree item
