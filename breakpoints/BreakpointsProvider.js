@@ -53,7 +53,7 @@ class BreakpointsProvider {
             treeItem.description = isLogpoint ? `${fileName}:${line}` : '';
             treeItem.tooltip = bp.location.uri.path;
 
-            treeItem.command = {
+            let command = {
                 command: 'vscode.open',
                 title: "Go to breakpoint",
                 arguments: [
@@ -62,10 +62,16 @@ class BreakpointsProvider {
                 ]
             };
 
+            treeItem.command = command;
+
             const treeChildPath = new vscode.TreeItem(relativePath, vscode.TreeItemCollapsibleState.None);
-            const treeChildLine = new vscode.TreeItem('line: ' + line, vscode.TreeItemCollapsibleState.None);
             treeChildPath.iconPath = new vscode.ThemeIcon('bookmark');
+            treeChildPath.command = command;
+
+            const treeChildLine = new vscode.TreeItem('line: ' + line, vscode.TreeItemCollapsibleState.None);
             treeChildLine.iconPath = new vscode.ThemeIcon('debug-breakpoint-log-unverified');
+            treeChildLine.command = command;
+
             treeItem.children = [
                 treeChildPath,
                 treeChildLine,
