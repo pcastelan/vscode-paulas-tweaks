@@ -3,20 +3,26 @@
 This is my personal extension for Vs Code. That I will gradually update with new features.
 
 ## Version
-**0.1.0**
+**0.2.0**
 
 ## Features
 
-### Breakpoints as Bookmarks
-Use the Vs Code's Breakpoints as Bookmarks.
+### Comments as Bookmarks
+Use Comments as Bookmarks, if you comment "@do: my task" or "@bookmark: my bookmark", the comment will show in the bookmarks panel.
 
-Creates a panel near the Output Panel, that lists the Breakpoints and show if they're enabled.
+![Preview](img/bookmarks.png)
 
-If the Breakpoint is a **Logpoint**, it will show the message as well.
+This extension was only tested in Javascript and PHP (including blade).
 
-You going to want to add `"debug.allowBreakpointsEverywhere": true` to your settings.json, otherwise you wont get the Bookmarks in any "non-debuggable" files.
-
-![Preview](img/image.png)
+#### Settings
+- `paula.bookmarks.extensions`: You can config the file extensions using this setting, This setting expects an array of extensions.
+  - default: `[".js", ".php", ".blade.php", ".ts", ".vue"]`.
+- `paula.bookmarks.folderMode`: Mode for folder filtering: 'include' to only scan specified folders, 'exclude' to scan all except specified folders
+  - default: `"exclude"`
+- `paula.bookmarks.includeFolders`: Folders to include when scanning for bookmarks (relative paths from workspace root). Use pattern like 'src/*' to include all subfolders.
+  - default: `[]`
+- `paula.bookmarks.excludeFolders`: Folders to exclude when scanning for bookmarks (relative paths from workspace root). Use pattern like 'src/tests/*' to exclude all subfolders.
+  - default: `["node_modules", "vendor", "dist", "build", ".git"]`
 
 ## Instalation
 I have not added, (and probably will not add) the extension to the VsCode Marketplace, so for now, you can only install the extension manually.

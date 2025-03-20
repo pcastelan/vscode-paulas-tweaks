@@ -15,7 +15,7 @@
     "main": "./extension.js",
     "contributes": {
         "viewsContainers": {
-            "panel": [
+            "activitybar": [
                 {
                     "id": "bookmarksPanelContainer",
                     "title": "Bookmarks",
@@ -24,13 +24,80 @@
             ]
         },
         "views": {
-            "bookmarksPanelContainer": [
+            "explorer": [
                 {
                     "id": "bookmarksPanel",
                     "name": "Paula's bookmarks"
                 }
             ]
-        }
+        },
+        "commands": [
+            {
+                "command": "bookmarks.refresh",
+                "title": "Refresh Bookmarks",
+                "icon": "$(refresh)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "bookmarks.refresh",
+                    "when": "view == bookmarksPanel",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "configuration": [
+            {
+                "title": "Paula Bookmarks",
+                "properties": {
+                    "paula.bookmarks.extensions": {
+                        "type": "array",
+                        "default": [
+                            ".js",
+                            ".php",
+                            ".blade.php",
+                            ".ts",
+                            ".vue",
+                            ".jsx",
+                            ".tsx"
+                        ],
+                        "description": "File extensions to scan for bookmarks"
+                    },
+                    "paula.bookmarks.folderMode": {
+                        "type": "string",
+                        "enum": [
+                            "include",
+                            "exclude"
+                        ],
+                        "default": "exclude",
+                        "description": "Mode for folder filtering: 'include' to only scan specified folders, 'exclude' to scan all except specified folders"
+                    },
+                    "paula.bookmarks.includeFolders": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Folders to include when scanning for bookmarks (relative paths from workspace root). Use pattern like 'src/*' to include all subfolders."
+                    },
+                    "paula.bookmarks.excludeFolders": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [
+                            "node_modules",
+                            "vendor",
+                            "dist",
+                            "build",
+                            ".git"
+                        ],
+                        "description": "Folders to exclude when scanning for bookmarks (relative paths from workspace root). Use pattern like 'src/tests/*' to exclude all subfolders."
+                    }
+                }
+            }
+        ]
     },
     "scripts": {
         "lint": "eslint .",
