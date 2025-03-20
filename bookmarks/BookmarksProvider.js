@@ -47,7 +47,7 @@ class BookmarksProvider {
         // Scan only this file
         const workspaceFolders = vscode.workspace.workspaceFolders || [];
         if (workspaceFolders.length > 0) {
-            const workspaceFolder = workspaceFolders[0].uri.fsPath;
+            // const workspaceFolder = workspaceFolders[0].uri.fsPath;
             try {
                 const bookmarks = await this.scanSingleFile(filePath);
                 if (bookmarks.length > 0) {
@@ -197,6 +197,16 @@ class BookmarksProvider {
      * Create tree items from bookmarks
      */
     createTreeItems(bookmarks, workspaceFolder) {
+        if(!bookmarks.length){
+            const noBookmarksItem = new vscode.TreeItem(
+                'No Bookmarks',
+                vscode.TreeItemCollapsibleState.None
+            );
+            noBookmarksItem.description = 'You have not created any bookmarks!';
+            noBookmarksItem.iconPath = new vscode.ThemeIcon('info');
+            return [noBookmarksItem];
+        }
+
         return bookmarks.map(bookmark => {
             const fileName = path.basename(bookmark.filePath);
             const line = bookmark.line;
@@ -205,7 +215,7 @@ class BookmarksProvider {
 
             const treeItem = new vscode.TreeItem(description, vscode.TreeItemCollapsibleState.Collapsed);
             treeItem.description = `${fileName}:${line}`;
-            treeItem.tooltip = bookmark.filePath;
+            treeItem.tooltip = type + ': ' + description;
             treeItem.iconPath = new vscode.ThemeIcon(type === 'do' ? 'debug-continue' : 'bookmark', new vscode.ThemeColor('foreground'));
 
             const command = {
@@ -315,8 +325,6 @@ class BookmarksProvider {
             // Default extensions if not set
             extensions = ['.js', '.php', '.blade.php', '.ts', '.vue', '.jsx', '.tsx'];
         }
-
-        // @do: test
 
         const traverseDir = async (dir) => {
             try {
