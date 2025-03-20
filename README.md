@@ -35,6 +35,8 @@ To do so:
 4. To update, just pull the main branch, or download it again and overwrite the current instalation.
 
 ## Release Notes
+### 0.2.0
+Changed the bookmarks driver to comments and added some configuration to the bookmarks search.
 
 ### 0.1.0
 - Initial release of the Breakpoints as Bookmarks feature.
