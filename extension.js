@@ -1,66 +1,46 @@
 const vscode = require('vscode');
-// const BreakpointsProvider = require('./breakpoints/BreakpointsProvider');
-
 const BookmarksProvider = require('./bookmarks/BookmarksProvider');
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
     const bookmarksProvider = new BookmarksProvider();
 
     const panel = vscode.window.createTreeView('bookmarksPanel', {
         treeDataProvider: bookmarksProvider
     });
 
-    // Atualiza quando a extensão é ativada
-    bookmarksProvider.refresh();
+    // Perform full refresh when extension is activated
+    bookmarksProvider.fullRefresh();
 
-    // Atualiza quando um documento é salvo
+    // Refresh only the changed file when a document is saved
     context.subscriptions.push(
-        vscode.workspace.onDidSaveTextDocument(() => {
-            bookmarksProvider.refresh();
+        vscode.workspace.onDidSaveTextDocument((document) => {
+            const filePath = document.uri.fsPath;
+            bookmarksProvider.refreshFile(filePath);
         })
     );
 
-    // Atualiza quando troca de workspace ou abre um projeto
+    // Perform full refresh when workspace folders change
     context.subscriptions.push(
         vscode.workspace.onDidChangeWorkspaceFolders(() => {
-            bookmarksProvider.refresh();
+            bookmarksProvider.fullRefresh();
         })
     );
 
-    // Comando manual de refresh
+    // Manual refresh command (full refresh)
     const refreshDisposable = vscode.commands.registerCommand('bookmarks.refresh', () => {
-        bookmarksProvider.refresh();
+        bookmarksProvider.fullRefresh();
     });
 
     context.subscriptions.push(panel, refreshDisposable);
-
-    // #region bookmarks from breakpoints
-    // const breakpointsProvider = new BreakpointsProvider();
-
-    // const panel = vscode.window.createTreeView('bookmarksPanel', {
-    //     treeDataProvider: breakpointsProvider
-    // });
-
-    // vscode.debug.onDidChangeBreakpoints(() => {
-    //     breakpointsProvider.refresh();
-    // });
-
-	// context.subscriptions.push(panel);
-
-    //#endregion
-
 }
 
 // This method is called when your extension is deactivated
 function deactivate() {}
 
-
-
 module.exports = {
-	activate,
-	deactivate
+    activate,
+    deactivate
 }
