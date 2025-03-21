@@ -205,7 +205,7 @@ class BookmarksProvider {
 
             const treeItem = new vscode.TreeItem(description, vscode.TreeItemCollapsibleState.Collapsed);
             treeItem.description = `${fileName}:${line}`;
-            treeItem.tooltip = bookmark.filePath;
+            treeItem.tooltip = description;
             treeItem.iconPath = new vscode.ThemeIcon(type === 'do' ? 'debug-continue' : 'bookmark', new vscode.ThemeColor('foreground'));
 
             const command = {
